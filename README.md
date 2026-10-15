@@ -7,7 +7,7 @@
     </td>
     <td style="vertical-align: top;">
       This repository contains the template code for the IRWA Final Project - Search Engine with Web Analytics.
-      The project is implemented using Python and the Flask web framework. It includes a simple web application that allows users to search through a collection of documents and view analytics about their searches.
+      The project is implemented using Python and the Flask web framework. It includes a simple web application that allows users to search through a collection of documents and view analytics about their searches. 
     </td>
   </tr>
 </table>
