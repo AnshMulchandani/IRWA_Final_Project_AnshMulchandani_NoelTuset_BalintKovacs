@@ -17,7 +17,7 @@ nltk.download('stopwords')
 def get_json_data(doc_path):
     
     with open(doc_path, 'r', encoding='utf-8') as fp:
-        data = json.load()
+        data = json.load(fp)
     return data
 
 #we perform datacleaning for title and description
