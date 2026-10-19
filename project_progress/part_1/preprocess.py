@@ -38,14 +38,28 @@ def build_terms(line):
 
 def create_index(data):
     index = defaultdict(list)
-    title_index = {}
+    document_index = {}
     for product in data:
         #get the document id
         prod_pid = product['pid']
         #passes the title + description, in case there isn't title or description we don't pass anything
         terms = build_terms(product.get('title', '') + " " + product.get('description', ''))
         title = product.get('title', '')
-        title_index[prod_pid] = title
+        document_index[prod_pid] = { prod_pid,
+            title,
+            product.get('description', ''),
+            product.get('brand', ''),
+            product.get('category', ''),
+            product.get('sub_category', ''),
+            product.get('product_details', []),
+            product.get('seller', ''),
+            product.get('out_of_stock', False), #by default we asume we have stock of a product
+            product.get('selling_price', ''),
+            product.get('discount', ''),
+            product.get('actual_price', ''),
+            product.get('average_rating', ''),
+            product.get('url', '')
+            }
         current_page_index = {}
         for position, term in enumerate(terms): #term is title + description
             try:
@@ -60,6 +74,6 @@ def create_index(data):
         for term_page, posting_page in current_page_index.items():
             index[term_page].append(current_page_index[term_page])
 
-    return index, title_index
+    return index, document_index
 
 
