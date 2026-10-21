@@ -27,8 +27,10 @@ def build_terms(line):
     stop_words = set(stopwords.words("english"))
     #we lower the strings
     line = line.lower()
+    #puntiation like - or ' is removed without a space then t-shirt becomes tshirt or men's becomes mens
+    line = re.sub(r"['\-]", "", line)
     #removes punctuations, any alfanumeric matches r'[^\w\s]', else it substitutes puntiation with blank space
-    line = re.sub(r'[^\w\s]', '', line)
+    line = re.sub(r'[^\w\s]', ' ', line)
     line = line.split()
     #remove stop words
     line = [x for x in line if x not in stop_words ]
