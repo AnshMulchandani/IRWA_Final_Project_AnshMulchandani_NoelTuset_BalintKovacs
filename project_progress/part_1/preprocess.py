@@ -12,12 +12,12 @@ import re #to remove punctuation
 
 #we download the stowords at the start
 nltk.download('stopwords')
+#we initialize the stemmer and stop_word
+STEMMER = PorterStemmer()
+STOP_WORDS = set(stopwords.words("english"))
 
 #we perform preprocessing for title and description
 def build_terms(line):
-    #we initialize the stemmer and stop_word
-    stemmer = PorterStemmer()
-    stop_words = set(stopwords.words("english"))
     #we lower the strings
     line = line.lower()
     #puntiation like - or ' is removed without a space then t-shirt becomes tshirt or men's becomes mens
@@ -26,15 +26,21 @@ def build_terms(line):
     line = re.sub(r'[^\w\s]', ' ', line)
     line = line.split()
     #remove stop words
-    line = [x for x in line if x not in stop_words ]
+    line = [x for x in line if x not in STOP_WORDS ]
     #perform steaming
-    line=[stemmer.stem(x) for x in line]
+    line=[STEMMER.stem(x) for x in line]
     return line
 
 #we perform the preprocessing in the entire document and we return the document with the title and description preprocessed
 def preprocess_doc(data):
     for product in data:
-        product.get('title', '') = build_terms(product.get('title', ''))
-        product.get('description', '') = build_terms(product.get('description', ''))
+        # get the title and index from the 
+        title_text = product.get('title', '')
+        desc_text = product.get('description', '')
+        
+        # Store the preprocessed elements in new campus
+        product['processed_title'] = build_terms(title_text)
+        product['processed_description'] = build_terms(desc_text)
+        
     return data
 
