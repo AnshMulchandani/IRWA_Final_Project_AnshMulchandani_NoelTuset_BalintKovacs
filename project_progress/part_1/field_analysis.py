@@ -79,18 +79,6 @@ def numeric_summary(data):
     print(f'  out_of_stock    true {sum(record["out_of_stock"] for record in parsed)}')
 
 
-def tshirt_spellings(data):
-    """How many products write t-shirt, t shirt or tshirt (title + description)."""
-    print('\n4. Spellings of t-shirt (products that use each one)')
-    pattern = re.compile(r'\bt(-| |)shirts?\b', re.IGNORECASE)
-    names = {'-': 't-shirt', ' ': 't shirt', '': 'tshirt'}
-    products = Counter()
-    for product in data:
-        text = (product.get('title') or '') + ' ' + (product.get('description') or '')
-        for spelling in {names[m.group(1)] for m in pattern.finditer(text)}:
-            products[spelling] += 1
-    for spelling in ('t-shirt', 't shirt', 'tshirt'):
-        print(f'  {spelling:8} {products[spelling]}')
 
 
 def textual_form(data):
@@ -122,5 +110,4 @@ if __name__ == '__main__':
     field_distinctiveness(data)
     compare_strategies(data, labels, skip_keys)
     numeric_summary(data)
-    tshirt_spellings(data)
     textual_form(data)
