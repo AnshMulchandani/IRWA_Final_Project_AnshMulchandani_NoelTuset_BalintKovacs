@@ -66,3 +66,6 @@ For `preprocess_doc`:
 6. Stores the preprocessed searchable text (`title`, `description`, `brand`, `sub_category`, and `product_details`) using `searchable_text`, run `build_terms` on it, and save to    `searchable_tokens`.
 8. (Optional) Run `numeric_terms` (`selling_price`, `actual_price`, `discount`, `average_rating`)to append numeric terms to `searchable_tokens`.
 9. Map the product's pid to this complete record in the `document_index` dictionary and return it.
+
+## AI usage
+We used Claude AI and Gemini to review our preprocessing code and debug errors in it, to help write the field handling and number parsing code, to compute the dataset statistics behind points 3 and 4, and to review our draft explanation of these decisions. We checked the code and the results ourselves and can explain every function.
