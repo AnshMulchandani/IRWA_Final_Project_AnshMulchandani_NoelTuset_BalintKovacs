@@ -15,7 +15,7 @@ The NLTK stop word list downloads automatically on first run.
 
 | File | What it does |
 |---|---|
-| `preprocess.py` | Turns text into terms (`build_terms`) and preprocesses every product (`preprocess_doc`) |
+| `preprocess.py` | Turns text into terms (`build_terms`), preprocesses every product (`preprocess_doc`) and saves the results in a dictionary with key `pid` of each document|
 | `fields.py` | Points 2, 3 and 4: the document record, which fields go into the searchable text, parsing of prices, discount, rating and stock |
 | `field_analysis.py` | Prints the evidence behind the field decisions: field distinctiveness, field strategies on the two validation queries, numeric field summary, t-shirt spellings |
 
@@ -37,22 +37,16 @@ with open('../../data/fashion_products_dataset.json', encoding='utf-8') as fp:
 data = preprocess_doc(data)
 ```
 
-Every product keeps its original fields (title and description stay readable for the results) and gets:
-
-- `processed_title`, `processed_description`: the terms of the title and of the description
-- `processed_terms`: the terms of every searchable field (title, description, brand, sub_category, product_details values), the input for the Part 2 index
-- `product_details` as one dictionary (`{'Fabric': 'Cotton Blend', ...}`) instead of a list
-- `selling_price`, `actual_price`, `discount`, `average_rating` as numbers, `None` when missing; `out_of_stock` as a boolean
-
 ## Options
 
 - **Fields in the searchable text:** `SEARCHABLE_FIELDS` in `fields.py` (title, description, brand, sub_category, product_details values). The strategies compared in the report are in `STRATEGIES`.
-- **T-shirt spellings:** `NORMALISE_TSHIRT` in `preprocess.py` (default `True`) maps t-shirt, t shirt and tshirt to one term.
 - **Codes left out of the text:** `identifier_detail_keys(data, max_unique_share=0.5)` in `fields.py`.
 - **Numeric fields as band terms:** `preprocess_doc(data, numeric_as_terms=True)` adds terms like `price_500_999` and `in_stock` (`numeric_terms` in `fields.py`). Off by default; the report explains why.
 
-## Preprocessing steps (`build_terms`)
+## Preprocessing steps (`build_terms` and `preprocess_doc`)
 
+For `build_terms`:
+0. Check if string is not null
 1. Lowercase.
 2. Map the t-shirt spellings to `tshirt` (if `NORMALISE_TSHIRT`).
 3. Delete hyphens and apostrophes, so `t-shirt` gives `tshirt` and `men's` gives `mens`.
@@ -62,3 +56,13 @@ Every product keeps its original fields (title and description stay readable for
 7. Porter stemming.
 
 The query must go through the same `build_terms`.
+
+For `preprocess_doc`:
+1. Check the dataset using identifier_detail_keys to identify product_details keys that are mostly unique.
+2. Loop through every product in dataset.
+3. Call `build_document_record` to extract and clean the 14 output fields into a base record.
+4. Execute `build_terms` on the product's title and save the tokens to `processed_title`.
+5. Execute `build_terms` on the product's description and save the tokens to `processed_description`.
+6. Stores the preprocessed searchable text (`title`, `description`, `brand`, `sub_category`, and `product_details`) using `searchable_text`, run `build_terms` on it, and save to    `searchable_tokens`.
+8. (Optional) Run `numeric_terms` (`selling_price`, `actual_price`, `discount`, `average_rating`)to append numeric terms to `searchable_tokens`.
+9. Map the product's pid to this complete record in the `document_index` dictionary and return it.

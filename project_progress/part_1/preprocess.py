@@ -61,13 +61,13 @@ def preprocess_doc(data, numeric_as_terms=False):
         record = build_document_record(product)
         
         # Point 1: Tokenized title and description
-        record['title_tokens'] = build_terms(product.get('title', ''))
-        record['description_tokens'] = build_terms(product.get('description', ''))
+        record['processed_title'] = build_terms(product.get('title', ''))
+        record['processed_description'] = build_terms(product.get('description', ''))
         
-        # Point 3: Tokenized hybrid searchable text (for Part 2 indexing)
+        # Point 3: preprocessed searchable text (title, description, brand, sub_category, and product_details) (for Part 2 indexing)
         record['searchable_tokens'] = build_terms(searchable_text(product, skip_keys))
         
-        # Point 4 option (off by default): append numeric band terms
+        # Point 4 option (off by default): append numeric band terms (out_of_stock, selling_price, actual_price, discount, average_rating)
         if numeric_as_terms:
             record['searchable_tokens'] = record['searchable_tokens'] + numeric_terms(record)
             
