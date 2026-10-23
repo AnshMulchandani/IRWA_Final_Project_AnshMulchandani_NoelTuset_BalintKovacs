@@ -133,15 +133,6 @@ def preprocess_doc(data):
         #Points 2 & 4: Build base dictionary with the 14 output fields,
         #flattened product_details, and parsed numeric/boolean values
         record = build_document_record(product)
-        
-        #Point 1: Tokenized title and description
-        for field in TEXTUAL_FIELDS:
-             record[field] = preprocess_line(product.get(field, ''))
-
-        for product_detail in product.get('product_details', []):
-            for key, value in product_detail.items():
-                #Point 3: Tokenized product_details values
-                record[key] = preprocess_line(value)
 
         document_index[prod_pid] = record
         
