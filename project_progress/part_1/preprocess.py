@@ -109,6 +109,8 @@ def build_document_record(product):
     product_details as a dict and the point 4 fields parsed into numbers.
     """
     record = {}
+    #for each field in the OUTPUT_FIELDS, we get the value from the product dictionary and clean it if it's a textual field
+    #we also clean the product_details field and parse the numeric fields
     for field in OUTPUT_FIELDS:
         product_data = product.get(field) or ''
 
@@ -128,12 +130,10 @@ def preprocess_doc(data):
     document_index = {}
 
     for product in data:
-
         prod_pid = product['pid']
-        #Points 2 & 4: Build base dictionary with the 14 output fields,
-        #flattened product_details, and parsed numeric/boolean values
-        record = build_document_record(product)
 
+        #generate the record for each product and store it in the document_index dictionary with pid as key
+        record = build_document_record(product)
         document_index[prod_pid] = record
         
     return document_index
