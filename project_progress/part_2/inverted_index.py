@@ -6,9 +6,9 @@ def create_index(data):
     index = defaultdict(list)
     document_index = {}
     document_index = preprocess_doc(data)
-
+    #should we add the loop of preprocess_doc here?
     current_page_index = {}
-    for position, term in enumerate(terms): #term is title + description
+    for position, term in enumerate(terms): #term is the elements in search query?
         try:
             # if the term is already in the index for the current page (current_page_index)
             # append the position to the corresponding list
