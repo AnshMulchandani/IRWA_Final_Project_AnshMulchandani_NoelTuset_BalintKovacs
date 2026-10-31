@@ -8,7 +8,8 @@ ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", ".."))
 
 def calculate_precision_at_k(retrieved_docs, relevant_docs, k):
     """
-    Computes Precision@K.
+    Computes Precision@K, this is done by retriving how many documents in top K are relevanr
+    and then it computes relevant_documents_in_top_k/K.
     """
     if not retrieved_docs:
         return 0.0
@@ -43,8 +44,8 @@ def main():
     # Since your CSV only has 'query_id', you must supply the text to search for.
     # (If you have a separate queries.csv file, you can load it into a dict here instead)
     queries_map = {
-        1: "women sweatshirt", # Replace with the actual search text for query_id 1
-        2: "men track pants",  # Replace with the actual search text for query_id 2
+        1: "women full sleeve sweatshirt cotton", # Replace with the actual search text for query_id 1
+        2: "men slim jeans blue",  # Replace with the actual search text for query_id 2
     }
 
     cumulative_precisions = {k: 0.0 for k in K_VALUES}
