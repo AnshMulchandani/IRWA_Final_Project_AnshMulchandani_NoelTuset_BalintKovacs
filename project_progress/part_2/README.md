@@ -18,17 +18,13 @@ And activate the `irwa.venv`
 
 | File | What it does |
 |---|---|
-| `inverted_index.py` | Creates the inverted_index, 
-(`create_index_tfidf`), search for documents that have all the terms in query and returns the documents ranked using TF-IDF.
-(`search_tf_idf`) the ranking part is done by
-(`rank_documents`)
-|
+| `inverted_index.py` | Creates the inverted_index, (`create_index_tfidf`), search for documents that have all the terms in query and returns the documents ranked using TF-IDF.(`search_tf_idf`) the ranking part is done by (`rank_documents`)
+
 
 | File | What it does |
 |---|---|
-| `evaluation.py` | Evaluates the search engine's retrieval and ranking performance against ground truth data. Computes depth-specific metrics 
-(`calculate_precision_at_k`, `calculate_recall_at_k`, `calculate_f1_score_at_k`, `calculate_ndcg_at_k`) and overall ranking quality metrics (`calculate_average_precision`, `calculate_reciprocal_rank`). The main function executes this calculation across all queries.
-|
+| `evaluation.py` | Evaluates the search engine's retrieval and ranking performance against ground truth data. Computes depth-specific metrics (`calculate_precision_at_k`, `calculate_recall_at_k`, `calculate_f1_score_at_k`, `calculate_ndcg_at_k`) and overall ranking quality metrics (`calculate_average_precision`, `calculate_reciprocal_rank`). The main function executes this calculation across all queries.
+
 
 ## Run
 
@@ -59,24 +55,6 @@ For `search_tf_idf`:
 3. Iterate through each term and perform a strict conjunctive search (AND) by taking the set intersection (docs.intersection) of all documents containing the current term.
 4. Return an empty list if any term is completely missing from the index or if the intersection becomes empty.
 5. Pass the resulting candidate documents and the query terms to rank_documents to compute cosine similarity scores and return the ranked list.
-
-## Preprocessing steps (`preprocess_line` and `preprocess_doc`)
-
-For `preprocess_line`:
-1. Check if the input is a valid string; return an empty structure if not.
-2. Lowercase the string.
-3. Delete apostrophes and hyphens (e.g., `t-shirt` becomes `tshirt`, `men's` becomes `mens`).
-4. Replace every other punctuation mark with a space.
-5. Split on whitespace into tokens.
-6. Remove NLTK English stop words.
-7. Apply Porter stemming to each token.
-8. Join the processed tokens back into a single space-separated string.
-
-For `preprocess_doc`:
-1. Loop through every product in the dataset.
-2. Extract the product `pid`.
-3. Call `build_document_record` to extract and clean the output fields, clean product details, and parse numeric/boolean values.
-4. Map the product's `pid` to this complete record in the `document_index` dictionary and return it.
 
 ## Function Reference (`evaluation.py`)
 - **`calculate_precision_at_k(retrieved_docs, relevant_docs, k)`**: Computes the proportion of the top K retrieved documents that are actually relevant. Returns hits / K.
