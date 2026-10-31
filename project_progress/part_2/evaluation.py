@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from part_2.inverted_index import create_index_tfidf, search_tf_idf 
-from part_1.preprocess import get_json_data
+from part_1.preprocess import get_json_data, get_csv_data
 # Get the absolute path to this document, then go one folder up to the parent
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", ".."))
@@ -37,11 +37,7 @@ def main():
     print(f"Index built successfully for {len(document_index)} documents.\n")
 
     print(f"Loading validation labels from {validation_file}...")
-    try:
-        val_df = pd.read_csv(validation_file)
-    except FileNotFoundError:
-        print(f"Error: Could not find {validation_file}.")
-        return
+    val_df = get_csv_data(validation_file)
 
     # 1. Map query_ids to actual text queries. 
     # Since your CSV only has 'query_id', you must supply the text to search for.

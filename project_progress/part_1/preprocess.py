@@ -9,6 +9,7 @@ import collections
 from numpy import linalg as la
 import json #to handle data in json format
 import re #to remove punctuation
+import pandas as pd #reads cv files
 
 #fields saved in the product record
 OUTPUT_FIELDS = ['pid', 'title', 'description', 'brand', 'category', 'sub_category',
@@ -26,11 +27,21 @@ STOP_WORDS = set(stopwords.words("english"))
 
 #gets the data from the json file
 def get_json_data(doc_path):
-    
-    with open(doc_path, 'r', encoding='utf-8') as fp:
-        data = json.load(fp)
+    try:
+        with open(doc_path, 'r', encoding='utf-8') as fp:
+            data = json.load(fp)
+    except FileNotFoundError:
+            print(f"Error: Could not find {doc_path}.")
+            return
     return data
 
+def get_csv_data(doc_path):
+    try:
+            val_df = pd.read_csv(doc_path)
+    except FileNotFoundError:
+            print(f"Error: Could not find {doc_path}.")
+            return
+    return val_df
 
 #we perform datacleaning for title and description
 def preprocess_line(line):
