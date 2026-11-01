@@ -50,8 +50,8 @@ def preprocess_line(line):
         return []
     #we lower the strings
     line = line.lower()
-    #puntiation like - or ' is removed without a space then t-shirt becomes tshirt or men's becomes mens
-    line = re.sub(r"['\-]", "", line)
+    #puntiation like - is removed without a space then t-shirt becomes tshirt
+    line = re.sub(r"[-]", "", line)
     #removes punctuations, any alfanumeric matches r'[^\w\s]', else it substitutes puntiation with blank space
     line = re.sub(r'[^\w\s]', ' ', line)
     line = line.split()
