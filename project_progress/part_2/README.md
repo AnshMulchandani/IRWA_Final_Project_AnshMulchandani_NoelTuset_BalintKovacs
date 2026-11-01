@@ -49,6 +49,16 @@ For `create_index_tfidf`:
 5. For each term in the local index, calculate the normalized TF (frequency divided by L2 norm), update the global Document Frequency (DF) counter, and append the document ID and positions to the global inverted index.
 6. After processing all documents, compute the IDF for every unique term using the formula log(total_documents / df[term]).
 
+For `rank_documents`:
+1. Initialize a query_vector (a list of zeros) and a doc_vectors dictionary (mapping each candidate document ID to a list of zeros). Both vectors are sized to the number of terms in the query.
+2. Count the frequency of each term in the query and compute the L2 norm (Euclidean norm) of these frequencies to normalize the query length.
+3. Iterate through each term in the query along with its index position. If the term does not exist in the global index, skip it.
+4. Calculate the query's TF-IDF score for the current term (Query TF = term count / query L2 norm, multiplied by the term's precomputed IDF) and assign it to the corresponding position in the query_vector.
+5. Loop through the inverted index postings for the current term. If the document in the posting is present in the candidate docs list, calculate its TF-IDF score (the document's precomputed TF for that term multiplied by the term's IDF) and update the document's doc_vector at the current term's position.
+6. Calculate the final score for each candidate document by computing the dot product (cosine similarity) between its populated doc_vector and the query_vector.
+7. Pair each document ID with its computed score and sort the list in descending order so the most relevant documents appear at the top.
+8. Extract and return the ordered list of document IDs.
+
 For `search_tf_idf`:
 1. Clean the raw query string using preprocess_line. Return an empty list if invalid.
 2. Split the cleaned query into individual terms.
