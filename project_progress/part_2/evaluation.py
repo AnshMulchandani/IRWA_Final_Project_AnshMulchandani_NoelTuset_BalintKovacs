@@ -192,7 +192,6 @@ def main():
         print(f"Average Precision@{K}: {cumulative_precision / num_queries:.3f}")
         print(f"Average Recall@{K}:    {cumulative_recall / num_queries:.3f}")
         print(f"Average F1-Score@{K}:  {cumulative_f1 / num_queries:.3f}")
-        print(f"Mean NDCG@{K}:         {cumulative_ndcg / num_queries:.3f}")
         print(f"Mean Average Precision (MAP): {cumulative_ap / num_queries:.3f}")
         print(f"Mean Reciprocal Rank (MRR):   {cumulative_rr / num_queries:.3f}")
 
