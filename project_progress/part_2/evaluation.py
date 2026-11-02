@@ -118,7 +118,7 @@ def calculate_ndcg_at_k(retrieved_docs, relevant_docs, k):
 def main():
     dataset_file = os.path.join(ROOT_DIR, "data", "fashion_products_dataset.json")
     #validation_file = os.path.join(ROOT_DIR, "data", "validation_labels.csv")
-    validation_file = os.path.join(ROOT_DIR, "data", "validation_labels_custom.csv")
+    validation_file = os.path.join(ROOT_DIR, "project_progress", "part_2", "validation_labels_custom.csv")
     K = 20 #K value, it can be tunned
     
     print(f"Loading dataset from {dataset_file}...")
