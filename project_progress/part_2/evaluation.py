@@ -117,7 +117,8 @@ def calculate_ndcg_at_k(retrieved_docs, relevant_docs, k):
 
 def main():
     dataset_file = os.path.join(ROOT_DIR, "data", "fashion_products_dataset.json")
-    validation_file = os.path.join(ROOT_DIR, "data", "validation_labels.csv")
+    #validation_file = os.path.join(ROOT_DIR, "data", "validation_labels.csv")
+    validation_file = os.path.join(ROOT_DIR, "data", "validation_labels_custom.csv")
     K = 20 #K value, it can be tunned
     
     print(f"Loading dataset from {dataset_file}...")
@@ -132,19 +133,19 @@ def main():
 
     # 1. Map query_ids to actual text queries. 
     # Since your CSV only has 'query_id', introduce the text to search for.
-    """queries_map = {
+    queries_map = {
         1: "women tshirt round neck cotton",
         2: "ecko unl printed sweatshirt",
         3: "men solid blue track pants",
         4: "satin necktie set pocket square cufflinks",
         5: "checkered full sleeve party blazer"
-    }"""
+    }
 
 
-    queries_map = {
+    """queries_map = {
         1: "women full sleeve sweatshirt cotton", 
         2: "men slim jeans blue",  
-    }
+    }"""
 
 
     cumulative_precision = 0.0

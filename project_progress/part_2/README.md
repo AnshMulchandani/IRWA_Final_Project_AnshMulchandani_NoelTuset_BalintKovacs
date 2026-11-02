@@ -20,6 +20,9 @@ And activate the `irwa.venv`
 |---|---|
 | `inverted_index.py` | Creates the inverted_index, (`create_index_tfidf`), search for documents that have all the terms in query and returns the documents ranked using TF-IDF.(`search_tf_idf`) the ranking part is done by (`rank_documents`)
 
+| File | What it does |
+|---|---|
+| `test_search.py` | Loads the product dataset, builds the TF-IDF index, and executes search retrieval across the 5 predefined test queries. Outputs the matching product count and prints the top ranked retrieved items per query to evaluate ranking quality. |
 
 | File | What it does |
 |---|---|
@@ -29,6 +32,11 @@ And activate the `irwa.venv`
 ## Run
 
 All commands from `project_progress`:
+
+To compute the ranking for the 5 proposed queries:
+```python (or python3)
+python -m part_2.test_search
+```
 
 To compute all the metrics related to ranking and retrival performance:
 ```python (or python3)
@@ -86,4 +94,4 @@ For `main`:
 8. After processing all queries, divide the cumulative totals by the number of evaluated queries to print the final averaged metrics (Mean Average Precision, Mean Reciprocal Rank, etc.).
 
 ## AI usage
-We used Gemini to review our evaluation and inverted_index code and debug errors in it, to help write some parts of the code like how to do certain computations or certain ranking decisions, and to review our draft explanation of these decisions. We checked the code and the results ourselves and can explain every function.
+We used Gemini to review our evaluation and inverted_index code and debug errors in it, to help write some parts of the code like how to do certain computations, certain ranking decisions and help build testing code, and to review our draft explanation of these decisions. We checked the code and the results ourselves and can explain every function.
