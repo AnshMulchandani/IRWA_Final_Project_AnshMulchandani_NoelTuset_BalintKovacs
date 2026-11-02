@@ -131,10 +131,20 @@ def main():
 
     # 1. Map query_ids to actual text queries. 
     # Since your CSV only has 'query_id', introduce the text to search for.
+    """queries_map = {
+        1: "women tshirt round neck cotton",
+        2: "ecko unl printed sweatshirt",
+        3: "men solid blue track pants",
+        4: "satin necktie set pocket square cufflinks",
+        5: "checkered full sleeve party blazer"
+    }"""
+
+
     queries_map = {
         1: "women full sleeve sweatshirt cotton", 
         2: "men slim jeans blue",  
     }
+
 
     cumulative_precision = 0.0
     cumulative_recall = 0.0
