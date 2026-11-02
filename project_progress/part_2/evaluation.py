@@ -51,9 +51,9 @@ def calculate_f1_score_at_k(p_at_k, r_at_k):
         
     return 2 * (p_at_k * r_at_k) / (p_at_k + r_at_k)
 
-def calculate_average_precision(retrieved_docs, relevant_docs):
+def calculate_average_precision_at_k(retrieved_docs, relevant_docs, k):
     """
-    Computes the Average Precision (AP) for a single query, used later on for MAP computation.
+    Computes the Average Precision at K (AP@K) for a single query.
     """
     if not retrieved_docs or not relevant_docs:
         return 0.0
@@ -62,15 +62,16 @@ def calculate_average_precision(retrieved_docs, relevant_docs):
     hits = 0
     sum_precisions = 0.0
     
-    for i, doc_id in enumerate(retrieved_docs):
+    # Restrict to top K documents
+    for i, doc_id in enumerate(retrieved_docs[:k]):
         if doc_id in relevant_set:
             hits += 1
             # Precision at this specific hit position
             precision_at_i = hits / (i + 1)
             sum_precisions += precision_at_i
             
-    # Divide by the total number of relevant documents for this query
-    return sum_precisions / len(relevant_docs)
+    # Divide by the total number of relevant documents (or K, whichever is smaller)
+    return sum_precisions / min(len(relevant_docs), k)
 
 def calculate_reciprocal_rank(retrieved_docs, relevant_docs):
     """
@@ -117,7 +118,7 @@ def calculate_ndcg_at_k(retrieved_docs, relevant_docs, k):
 def main():
     dataset_file = os.path.join(ROOT_DIR, "data", "fashion_products_dataset.json")
     validation_file = os.path.join(ROOT_DIR, "data", "validation_labels.csv")
-    K = 10 #K value, it can be tunned
+    K = 20 #K value, it can be tunned
     
     print(f"Loading dataset from {dataset_file}...")
     dataset = get_json_data(dataset_file)
@@ -175,9 +176,9 @@ def main():
         retrieved_docs = search_tf_idf(query_text, index, idf, tf, document_index)
         print(f"\n--- Results for Query: '{query_text}' (ID: {query_id}) ---")
         # Calculate overall query metrics
-        ap = calculate_average_precision(retrieved_docs, relevant_docs)
+        ap_at_k = calculate_average_precision_at_k(retrieved_docs, relevant_docs, K)
         rr = calculate_reciprocal_rank(retrieved_docs, relevant_docs)
-        cumulative_ap += ap
+        cumulative_ap += ap_at_k
         cumulative_rr += rr
         # Calculate Precision for each query and K
         p_at_k = calculate_precision_at_k(retrieved_docs, relevant_docs, K)
@@ -188,9 +189,12 @@ def main():
         cumulative_recall += r_at_k
         cumulative_f1 += f1_at_k
         cumulative_ndcg += ndcg_at_k
-        print(f"  Precision@{K}: {p_at_k:.3f}")
-        print(f"  Recall@{K}: {r_at_k:.3f}")
-        print(f"  NDCG@{K}:      {ndcg_at_k:.3f}")
+        print(f"  Precision@{K}:     {p_at_k:.3f}")
+        print(f"  Recall@{K}:        {r_at_k:.3f}")
+        print(f"  F1-Score@{K}:      {f1_at_k:.3f}")
+        print(f"  Average Prec@{K}:  {ap_at_k:.3f}")
+        print(f"  Reciprocal Rank: {rr:.3f}")
+        print(f"  NDCG@{K}:          {ndcg_at_k:.3f}")
         num_queries += 1
 
     # Print results
@@ -204,6 +208,7 @@ def main():
         print(f"Average F1-Score@{K}:  {cumulative_f1 / num_queries:.3f}")
         print(f"Mean Average Precision (MAP): {cumulative_ap / num_queries:.3f}")
         print(f"Mean Reciprocal Rank (MRR):   {cumulative_rr / num_queries:.3f}")
+        print(f"Mean NDCG@{K}:         {cumulative_ndcg / num_queries:.3f}")
 
 if __name__ == "__main__":
     main()
