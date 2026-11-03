@@ -99,14 +99,14 @@ def calculate_ndcg_at_k(retrieved_docs, relevant_docs, k):
         
     relevant_set = set(relevant_docs)
     
-    # 1. Calculate DCG@K
+    # Calculate DCG@K
     dcg = 0.0
     for i, doc_id in enumerate(retrieved_docs[:k]):
         if doc_id in relevant_set:
-            # Rank is i + 1. log2(rank + 1) becomes log2(i + 2)
+            # Rank is i + 1. So log2(rank + 1) becomes log2(i + 2)
             dcg += 1.0 / math.log2(i + 2)
             
-    # 2. Calculate Ideal DCG@K (IDCG)
+    # Calculate Ideal DCG@K (IDCG)
     # The ideal ranking has the relevant documents first and then the non relevant
     idcg = 0.0
     ideal_hits = min(len(relevant_docs), k)
@@ -117,7 +117,7 @@ def calculate_ndcg_at_k(retrieved_docs, relevant_docs, k):
 
 def main():
     dataset_file = os.path.join(ROOT_DIR, "data", "fashion_products_dataset.json")
-    #validation_file = os.path.join(ROOT_DIR, "data", "validation_labels.csv")
+    #validation_file = os.path.join(ROOT_DIR, "data", "validation_labels.csv") #uncoment if test for the previous two queries
     validation_file = os.path.join(ROOT_DIR, "project_progress", "part_2", "validation_labels_custom.csv")
     K = 20 #K value, it can be tunned
     
@@ -131,8 +131,7 @@ def main():
     print(f"Loading validation labels from {validation_file}...")
     val_df = get_csv_data(validation_file)
 
-    # 1. Map query_ids to actual text queries. 
-    # Since your CSV only has 'query_id', introduce the text to search for.
+    # Map query_ids to actual text queries. 
     queries_map = {
         1: "women tshirt round neck cotton",
         2: "ecko unl printed sweatshirt",
@@ -141,7 +140,7 @@ def main():
         5: "checkered full sleeve party blazer"
     }
 
-
+    #uncomment if testing for this two queries is needed
     """queries_map = {
         1: "women full sleeve sweatshirt cotton", 
         2: "men slim jeans blue",  
@@ -167,7 +166,7 @@ def main():
             
         query_text = queries_map[query_id]
         
-        # Filter for relevant documents (labels == 1) and extract their PIDs into a list
+        # Filter for relevant documents (labels == 1) and extract their PIDs
         relevant_docs = group[group['labels'] == 1]['pid'].tolist()
         
         # Skip if a query has no relevant documents in the dataset

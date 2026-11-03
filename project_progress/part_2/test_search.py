@@ -1,4 +1,4 @@
-#TEST FILE GENERATED WITH GEMINI
+#TEST FILE GENERATED WITH THE HELP OF GEMINI
 
 import json
 import os
@@ -50,7 +50,7 @@ for q in test_queries:
     results = search_tf_idf(q, index, idf, tf, document_index)
     print(f"\nQuery: '{q}' (Total Matches: {len(results)})")
     
-    # Display top 7 matching products with titles
+    # Display top 20 matching products with titles
     for rank, pid in enumerate(results[:20], start=1):
         title = document_index[pid].get('title', 'No Title')
         print(f"  {rank}. [{pid}] {title}")
