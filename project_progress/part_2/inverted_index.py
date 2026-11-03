@@ -51,7 +51,7 @@ def create_index_tfidf(data):
 
     #compute IDF for each term 
     for term in df:
-        idf[term] = np.round(np.log(float(num_documents / df[term])), 4)
+        idf[term] = np.round(np.log2(float(num_documents / df[term])), 4)
 
     return index, tf, df, idf, document_index
 
