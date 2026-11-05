@@ -56,7 +56,7 @@ def create_index_tfidf(data):
     return index, tf, df, idf, document_index
 
 
-def rank_documents(terms, docs, index, idf, tf, document_index):
+def rank_documents_tf_idf(terms, docs, index, idf, tf, document_index):
     """
     Perform ranking of candidate documents matching a query based on TF-IDF cosine similarity
     """
@@ -114,5 +114,5 @@ def search_tf_idf(query, index, idf, tf, document_index):
     docs = list(docs)
 
     #TF-IDF Cosine Similarity Ranking
-    ranked_docs = rank_documents(query_terms, docs, index, idf, tf, document_index)
+    ranked_docs = rank_documents_tf_idf(query_terms, docs, index, idf, tf, document_index)
     return ranked_docs
