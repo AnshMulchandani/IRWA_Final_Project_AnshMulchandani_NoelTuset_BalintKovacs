@@ -1,13 +1,13 @@
-from part_1.preprocess import preprocess_doc, preprocess_line
+from part_1.preprocess import preprocess_line
 import part_2.inverted_index as tf_idf
 from collections import defaultdict, Counter
 from array import array
 import math
 import numpy as np
 
-def compare_retrival(query, index, idf, tf, document_index):
-    ranked_docs_bm25 = search_bm25(query, index, idf, tf, document_index)
-    ranked_docs_tf_idf = tf_idf.search_tf_idf(query, index, idf, tf, document_index)
+
+def rank_documents_bm25(query_terms, docs, index, idf, tf, document_index, k1=1, b=0.75):
+
     return
 
 
@@ -34,5 +34,10 @@ def search_bm25(query, index, idf, tf, document_index):
     docs = list(docs)
 
     #TF-IDF Cosine Similarity Ranking
-    ranked_docs = tf_idf.rank_documents_tf_idf(query_terms, docs, index, idf, tf, document_index)
+    ranked_docs = rank_documents_bm25(query_terms, docs, index, idf, tf, document_index)
     return ranked_docs
+
+def compare_retrival(query, index, idf, tf, document_index):
+    ranked_docs_bm25 = search_bm25(query, index, idf, tf, document_index)
+    ranked_docs_tf_idf = tf_idf.search_tf_idf(query, index, idf, tf, document_index)
+    return
