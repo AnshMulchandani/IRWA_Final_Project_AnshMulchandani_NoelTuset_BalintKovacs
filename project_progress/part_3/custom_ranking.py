@@ -41,7 +41,7 @@ def calculate_custom_multiplier(record, a=1.0, b=2.0):
 
     return multiplier * stock_penalty
 
-def create_index_tfidf(data, field_weights=None):
+def create_index_tfidf_custom(data, field_weights=None):
     """
     Build inverted index and calculate TF, DF, IDF, and document index with custom business weights.
     """
@@ -107,7 +107,7 @@ def create_index_tfidf(data, field_weights=None):
 
 
 
-def rank_documents_tf_idf(terms, docs, index, idf, tf, document_index):
+def rank_documents_tf_idf_custom(terms, docs, index, idf, tf, document_index):
     """
     Perform ranking of candidate documents matching a query based on TF-IDF cosine similarity,
     factoring in the precalculated business logic multiplier.
@@ -149,7 +149,7 @@ def rank_documents_tf_idf(terms, docs, index, idf, tf, document_index):
 
 
 
-def search_tf_idf(query, index, idf, tf, document_index):
+def search_tf_idf_custom(query, index, idf, tf, document_index):
     """
     Retrieves matching documents for query terms and ranks them by TF-IDF score.
     """
@@ -171,7 +171,7 @@ def search_tf_idf(query, index, idf, tf, document_index):
     docs = list(docs)
 
     #TF-IDF Cosine Similarity Ranking with Custom Multiplier
-    ranked_docs = rank_documents_tf_idf(query_terms, docs, index, idf, tf, document_index)
+    ranked_docs = rank_documents_tf_idf_custom(query_terms, docs, index, idf, tf, document_index)
     return ranked_docs
 
 
@@ -212,7 +212,7 @@ if __name__ == "__main__":
     
 
     #build inverted index and calculate TF, DF, IDF, and document index with custom weights
-    index, tf, df, idf, document_index = create_index_tfidf(sample_data, FIELD_WEIGHTS)
+    index, tf, df, idf, document_index = create_index_tfidf_custom(sample_data, FIELD_WEIGHTS)
     print(f"Inverted index constructed ({len(index)} terms).\n")
 
     test_queries = [
@@ -225,7 +225,7 @@ if __name__ == "__main__":
 
     print("================ EVALUATING TEST QUERIES ================")
     for q in test_queries:
-        results = search_tf_idf(q, index, idf, tf, document_index)
+        results = search_tf_idf_custom(q, index, idf, tf, document_index)
         print(f"\nQuery: '{q}' (Total Matches: {len(results)})")
         
         for rank, pid in enumerate(results[:5], start=1):
